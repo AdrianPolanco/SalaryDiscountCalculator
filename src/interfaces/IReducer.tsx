@@ -1,4 +1,4 @@
-import IAction from "./IAction";
+import { DispatchWithoutAction } from "react";
 import IFormData from "./IFormData";
 
-export type IReducer = [state: IFormData, dispatch: React.Dispatch<IAction>];
+export type IReducer = [state: IFormData, dispatch: DispatchWithoutAction];

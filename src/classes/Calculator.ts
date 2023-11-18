@@ -3,8 +3,13 @@ export default abstract class Calculator {
     public calculateDailySalary(monthlySalary: number): number {
         return Number((monthlySalary / 23.83).toFixed(2));
     }
-    //Calculates annual salary
-    public calculateAnnualSalary(monthlySalary: number): number {
-        return Number((monthlySalary * 12).toFixed(2));
+    //Calculates monthly amounts
+    public calculateMonthlyAmount(annualAmount: number): number {
+        return Number((annualAmount / 12).toFixed(2));
     }
+    //Calculates annual salary
+    public abstract calculateAnnualSalary(
+        monthlySalary: number,
+        totalTaxes?: number
+    ): number;
 }

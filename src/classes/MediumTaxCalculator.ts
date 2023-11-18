@@ -1,11 +1,13 @@
-import ITaxesCalculator from "../interfaces/ITaxesCalculator";
 import { Percentages } from "../interfaces/enums/Percentages";
 import { RangeSalaries } from "../interfaces/enums/RangeSalaries";
 import { TaxBonus } from "../interfaces/enums/TaxBonus";
+import TaxesCalculator from "./TaxesCalculator";
 
-export default class MediumTaxCalculator implements ITaxesCalculator {
+export default class MediumTaxCalculator extends TaxesCalculator {
     private static instace: MediumTaxCalculator;
-    private constructor() {}
+    private constructor() {
+        super();
+    }
 
     public static GetInstance(): MediumTaxCalculator {
         if (!MediumTaxCalculator.instace)
@@ -14,18 +16,21 @@ export default class MediumTaxCalculator implements ITaxesCalculator {
     }
 
     public calculateTaxes(
-        grossSalary: number,
+        annualGrossSalary: number,
         referenceSalary = RangeSalaries.MediumSalary,
         taxPercentage = Percentages.MediumPercentage,
         base = TaxBonus.LowMediumBonus
     ): number {
-        if (grossSalary < referenceSalary)
+        if (annualGrossSalary < referenceSalary)
             throw new Error(
                 `Invalid argument:This class doesnt work with salaries lesser than${RangeSalaries.MediumSalary}`
             );
 
         return Number(
-            (base + (grossSalary - referenceSalary) * taxPercentage).toFixed(2)
+            (
+                base +
+                (annualGrossSalary - referenceSalary) * taxPercentage
+            ).toFixed(2)
         );
     }
 }

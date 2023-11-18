@@ -12,7 +12,6 @@ const MainForm = (): JSX.Element => {
                 <FormLabel>Gross Salary: </FormLabel>
                 <Input
                     type="numeric"
-                    pattern="[0-9]*"
                     min={0}
                     className="border border-green-200 rounded"
                     placeholder="Your monthly salary in DOP"
@@ -36,26 +35,22 @@ const MainForm = (): JSX.Element => {
                         className="border border-green-200 rounded p-2"
                         min="1992-01-01"
                         max={`${new Date().getFullYear()}-12-31`}
-                        onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            dispatch({
-                                name: "untilDate",
-                                value: e.target.value,
-                            })
-                        }
+                        value={state.untilDate}
                     />
                 </div>
             </div>
             <div className="flex justify-center">
                 <Button
                     isLoading={loading}
-                    loadingText="Submitting"
+                    loadingText="Calculating..."
                     className="border border-solid bg-green-300 w-36 text-white rounded-xl p-1 hover:text-green-300 hover:bg-white hover:border-green-300 transform scale-100 active:scale-95 transition duration-200"
                     variant="outline"
                     onClick={() => {
-                        setLoading(true);
+                        /* setLoading(true);
                         setTimeout(() => {
                             setLoading(false);
-                        }, 2000);
+                        }, 2000); */
+                        dispatch();
                     }}
                 >
                     Calculate

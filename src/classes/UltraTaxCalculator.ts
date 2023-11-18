@@ -1,11 +1,13 @@
-import ITaxesCalculator from "../interfaces/ITaxesCalculator";
 import { Percentages } from "../interfaces/enums/Percentages";
 import { RangeSalaries } from "../interfaces/enums/RangeSalaries";
 import { TaxBonus } from "../interfaces/enums/TaxBonus";
+import TaxesCalculator from "./TaxesCalculator";
 
-export default class UltraTaxCalculator implements ITaxesCalculator {
+export default class UltraTaxCalculator extends TaxesCalculator {
     private static instace: UltraTaxCalculator;
-    private constructor() {}
+    private constructor() {
+        super();
+    }
 
     public static GetInstance(): UltraTaxCalculator {
         if (!UltraTaxCalculator.instace)
@@ -14,18 +16,21 @@ export default class UltraTaxCalculator implements ITaxesCalculator {
     }
 
     public calculateTaxes(
-        grossSalary: number,
+        annualGrossSalary: number,
         referenceSalary = RangeSalaries.UltraSalary,
         taxPercentage = Percentages.UltraPercentage,
         base = TaxBonus.UltraBonus
     ): number {
-        if (grossSalary < referenceSalary)
+        if (annualGrossSalary < referenceSalary)
             throw new Error(
                 `Invalid argument:This class doesnt work with salaries lesser than${RangeSalaries.UltraSalary}`
             );
 
         return Number(
-            (base + (grossSalary - referenceSalary) * taxPercentage).toFixed(2)
+            (
+                base +
+                (annualGrossSalary - referenceSalary) * taxPercentage
+            ).toFixed(2)
         );
     }
 }
