@@ -1,7 +1,7 @@
 import ITaxes from "./ITaxes";
 
 export default interface INetResults {
-    anualNetSalary: number;
+    annualNetSalary: number;
     monthlyNetSalary: number;
     dailyNetSalary: number;
     monthlyWithHolding: number;

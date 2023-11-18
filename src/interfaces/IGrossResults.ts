@@ -1,5 +1,5 @@
 export default interface IGrossResults {
-    anualGrossSalary: number;
+    annualGrossSalary: number;
     monthlyGrossSalary: number;
     dailySalary: number;
 }

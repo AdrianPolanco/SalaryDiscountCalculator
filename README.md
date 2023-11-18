@@ -26,8 +26,8 @@ Calculo Impuestos Salario:
 Salario Anual = Salario Bruto _ 12
 IMPUESTO ANUAL a pagar dependiendo del salario:
 Hasta 416220 anual (34685) mensual -> Impuesto = 0
-Desde 416220.01 anual (34685.00083 mensual) hasta 624329 anual (52027.41 mensual) -> (624329 - 416220.01) * 0.15
-Desde 624329.01 anual (52027.4175 mensual) hasta 867123 anual (72.260,25 mensual) -> 31216 + ((867123 - 624329.01) * 0.2)
+Desde 416220.01 anual (34685.00083 mensual) hasta 624329 anual (52027.41 mensual) -> (Salario - 416220.01) * 0.15
+Desde 624329.01 anual (52027.4175 mensual) hasta 867123 anual (72.260,25 mensual) -> 31216 + ((Salario - 624329.01) * 0.2)
 Desde 867123.01 anual (72.260,25083 mensual) en adelante -> 79776 + ((Salario Anual - 867123.01) * 0.25)
 
 IMPUESTO MENSUAL = IMPUESTO ANUAL/12
