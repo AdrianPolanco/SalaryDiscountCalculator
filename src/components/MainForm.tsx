@@ -1,97 +1,155 @@
 import {
     Button,
     FormControl,
+    FormErrorMessage,
     FormLabel,
     Input,
-    NumberDecrementStepper,
-    NumberIncrementStepper,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
 } from "@chakra-ui/react";
-import {
-    ChangeEvent,
-    FormEvent,
-    MouseEventHandler,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { BaseViewContext } from "../providers/ContextProvider";
-import IFormData from "../interfaces/IFormData";
+import { Formik, Field } from "formik";
+import { ViewTableContext } from "../providers/TableProvider";
 
 const MainForm = (): JSX.Element => {
-    const [values, setValues] = useContext(BaseViewContext);
+    const [formValues, setFormValues] = useContext(BaseViewContext);
+    const [, setShowTable] = useContext(ViewTableContext);
     const [loading, setLoading] = useState<boolean>(false);
     const currentDate: Date = new Date();
     const formRef = useRef(null);
     useEffect(() => {
-        console.log("mounted");
-    }, []);
-
-    const handleSubmit = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
-        e.preventDefault();
-
-        const formData: FormData = new FormData(formRef.current!);
-        //const formDataObject = Object.fromEntries([...formData.entries()]);
-        /* setLoading(true);
-                        setTimeout(() => {
-                            setLoading(false);
-                        }, 2000); */
-
-        console.log(formData);
-    };
+        setTimeout(() => {
+            console.log(formValues);
+            setLoading(false);
+        }, 7000);
+    }, [formValues]);
 
     return (
-        <FormControl className="flex flex-col p-5 gap-12" ref={formRef}>
-            <div className="flex flex-col justify-center">
-                <FormLabel>Gross Monthly Salary: </FormLabel>
-                <NumberInput
-                    min={0}
-                    placeholder="Your monthly salary in DOP"
-                    name="grossMonthlySalary"
+        <Formik
+            initialValues={formValues}
+            validateOnChange
+            onSubmit={(values, { setErrors }) => {
+                // Getting values from the date inputs
+                const fromDate = values.fromDate;
+                const untilDate = values.untilDate;
+
+                if (fromDate > untilDate) {
+                    // Setting errors
+                    setErrors({
+                        fromDate:
+                            "The starting date must be before than the ending date",
+                        untilDate:
+                            "The ending date must be after the starting date",
+                    });
+                    return;
+                }
+                setLoading(true);
+                setFormValues(values);
+                setShowTable(true);
+                setLoading(false);
+            }}
+        >
+            {({ handleSubmit, errors, touched }) => (
+                <form
+                    className="flex flex-col gap-8 p-10"
+                    ref={formRef}
+                    onSubmit={handleSubmit}
                 >
-                    <NumberInputField className="border border-green-200 rounded" />
-                </NumberInput>
-            </div>
-            <div className="flex flex-col items-center gap-5">
-                <div className="flex gap-10">
-                    <FormLabel>From: </FormLabel>
-                    <Input
-                        type="date"
-                        className="border border-green-200 rounded p-2"
-                        min="1992-01-01"
-                        max={`${new Date().getFullYear()}-12-31`}
-                        name="fromDate"
-                    />
-                </div>
-                <div className="flex gap-10">
-                    <FormLabel>Until: </FormLabel>
-                    <Input
-                        type="date"
-                        className="border border-green-200 rounded p-2"
-                        min="1992-01-01"
-                        max={`${currentDate.getFullYear()}-12-31`}
-                        name="untilDate"
-                    />
-                </div>
-            </div>
-            <div className="flex justify-center">
-                <Button
-                    isLoading={loading}
-                    loadingText="Calculating..."
-                    className="border border-solid bg-green-300 w-36 text-white rounded-xl p-1 hover:text-green-300 hover:bg-white hover:border-green-300 transform scale-100 active:scale-95 transition duration-200"
-                    variant="outline"
-                    type="submit"
-                    onClick={(e) => handleSubmit(e)}
-                >
-                    Calculate
-                </Button>
-            </div>
-        </FormControl>
+                    <FormControl className="flex flex-col p-5">
+                        <FormLabel htmlFor="grossMonthlySalary">
+                            Gross Monthly Salary:
+                        </FormLabel>
+                        <Field
+                            as={Input}
+                            id="grossMonthlySalary"
+                            name="grossMonthlySalary"
+                            defaultValue=""
+                            placeholder="Your monthly salary in DOP"
+                            className="border border-green-200 rounded p-2"
+                            type="text"
+                        />
+                    </FormControl>
+
+                    <div className="flex gap-10 justify-center">
+                        <div className="flex flex-col">
+                            <FormControl
+                                isInvalid={
+                                    !!errors.fromDate && touched.fromDate
+                                }
+                            >
+                                <FormLabel htmlFor="fromDate">From: </FormLabel>
+                                <Field
+                                    as={Input}
+                                    type="date"
+                                    className="border border-green-200 rounded p-2"
+                                    min="1992-01-01"
+                                    max={`${new Date().getFullYear()}-12-31`}
+                                    name="fromDate"
+                                    id="fromDate"
+                                    variant="filled"
+                                    validate={(value: string) => {
+                                        let error;
+
+                                        if (value == "") {
+                                            error = "This field is required";
+                                        }
+
+                                        return error;
+                                    }}
+                                />
+                                <FormErrorMessage className="text-red-600">
+                                    {errors.fromDate}
+                                </FormErrorMessage>
+                            </FormControl>
+                        </div>
+                        <div className="flex flex-col">
+                            <FormControl
+                                isInvalid={
+                                    !!errors.untilDate && touched.untilDate
+                                }
+                            >
+                                <FormLabel htmlFor="untilDate">
+                                    Until:{" "}
+                                </FormLabel>
+                                <Field
+                                    as={Input}
+                                    type="date"
+                                    className="border border-green-200 rounded p-2"
+                                    min="1992-01-01"
+                                    max={`${currentDate.getFullYear()}-12-31`}
+                                    name="untilDate"
+                                    id="untilDate"
+                                    variant="filled"
+                                    validate={(value: string) => {
+                                        let error;
+
+                                        if (value == "") {
+                                            error = "This field is required";
+                                        }
+
+                                        return error;
+                                    }}
+                                />
+                                <FormErrorMessage className="text-red-600">
+                                    {errors.untilDate}
+                                </FormErrorMessage>
+                            </FormControl>
+                        </div>
+                    </div>
+
+                    <div className="flex justify-center mb-10">
+                        <Button
+                            isLoading={loading}
+                            loadingText="Calculating..."
+                            className="border border-solid bg-green-300 w-36 text-white rounded-xl p-1 hover:text-green-300 hover:bg-white hover:border-green-300 transform scale-100 active:scale-95 transition duration-200"
+                            variant="outline"
+                            type="submit"
+                        >
+                            Calculate
+                        </Button>
+                    </div>
+                </form>
+            )}
+        </Formik>
     );
 };
 
