@@ -9,8 +9,6 @@ import {
     ViewTableContext,
 } from "../providers/TableProvider";
 const BaseView = (): JSX.Element => {
-    const [data] = useContext(ViewTableContext);
-
     return (
         <div>
             <Header>

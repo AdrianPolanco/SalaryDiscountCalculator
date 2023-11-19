@@ -17,7 +17,7 @@ import NetSalaryCalculator from "../classes/NetSalaryCalculator";
 
 const MainForm = (): JSX.Element => {
     const [formValues, setFormValues] = useContext(BaseViewContext);
-    const [showTable, setShowTable] = useContext(ViewTableContext);
+    const [, setShowTable] = useContext(ViewTableContext);
     const [loading, setLoading] = useState<boolean>(false);
     const currentDate: Date = new Date();
     const formRef = useRef(null);
@@ -45,7 +45,7 @@ const MainForm = (): JSX.Element => {
                 }
                 setLoading(true);
                 setFormValues(values);
-                setShowTable({ ...showTable, show: true });
+
                 const grossResults =
                     grossSalaryCalculator.getGrossSalaryData(values);
                 const taxCalculatorRouter: TaxCalculatorRouter =
@@ -61,14 +61,13 @@ const MainForm = (): JSX.Element => {
                         taxCalulator,
                         grossResults
                     );
-                setShowTable({
-                    ...showTable,
-                    netResults: netData,
-                    grossResults:
-                        grossSalaryCalculator.getGrossSalaryData(values),
+                setShowTable((prevState) => {
+                    return {
+                        ...prevState,
+                        netResults: netData,
+                        grossResults,
+                    };
                 });
-                //SetTimeOut used with showing animations purposes, I know that in a real application this must not be done
-                setTimeout(() => {}, 3000);
 
                 setLoading(false);
             }}

@@ -4,7 +4,6 @@ import IViewContext from "../interfaces/IViewContext";
 import IData from "../interfaces/IData";
 
 const data: IData = {
-    show: false,
     grossResults: {
         annualGrossSalary: 0,
         monthlyGrossSalary: 0,
