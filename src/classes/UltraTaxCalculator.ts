@@ -23,7 +23,7 @@ export default class UltraTaxCalculator extends TaxesCalculator {
     ): number {
         if (annualGrossSalary < referenceSalary)
             throw new Error(
-                `Invalid argument:This class doesnt work with salaries lesser than${RangeSalaries.UltraSalary}`
+                `Invalid argument:This class doesnt work with salaries lesser than ${RangeSalaries.UltraSalary}`
             );
 
         return Number(

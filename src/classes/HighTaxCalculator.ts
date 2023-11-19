@@ -12,7 +12,7 @@ export default class HighTaxCalculator extends TaxesCalculator {
     public static GetInstance(): HighTaxCalculator {
         if (!HighTaxCalculator.instace)
             HighTaxCalculator.instace = new HighTaxCalculator();
-        return this.instace;
+        return HighTaxCalculator.instace;
     }
 
     public calculateTaxes(

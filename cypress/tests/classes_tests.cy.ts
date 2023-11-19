@@ -43,7 +43,7 @@ describe("GrossSalaryCalculator class unit tests", (): void => {
 
     it("Get data about the gross salary", () => {
         const mockFormData: IFormData = {
-            rawMonthlySalary: 16377,
+            grossMonthlySalary: 16377,
             fromDate: "",
             untilDate: "",
         };
@@ -77,7 +77,7 @@ describe("NetSalaryCalculator class unit tests", (): void => {
 
     it("Get data about the net salary", () => {
         const mockFormData: IFormData = {
-            rawMonthlySalary: 83982.18,
+            grossMonthlySalary: 83982.18,
             fromDate: "",
             untilDate: "",
         };

@@ -12,7 +12,7 @@ export default class MediumTaxCalculator extends TaxesCalculator {
     public static GetInstance(): MediumTaxCalculator {
         if (!MediumTaxCalculator.instace)
             MediumTaxCalculator.instace = new MediumTaxCalculator();
-        return this.instace;
+        return MediumTaxCalculator.instace;
     }
 
     public calculateTaxes(

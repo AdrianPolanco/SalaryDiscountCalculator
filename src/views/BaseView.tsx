@@ -2,7 +2,7 @@ import Header from "../components/Header";
 import MainForm from "../components/MainForm";
 import MobileTable from "../components/MobileTable";
 import { ChakraProvider } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import BaseFormProvider from "../providers/ContextProvider";
 import {
     ViewTableProvider,
@@ -18,7 +18,7 @@ const BaseView = (): JSX.Element => {
                     <ViewTableProvider>
                         <MainForm></MainForm>
                         <ChakraProvider>
-                            {data.show && <MobileTable></MobileTable>}
+                            <MobileTable></MobileTable>
                         </ChakraProvider>
                     </ViewTableProvider>
                 </BaseFormProvider>

@@ -5,23 +5,24 @@ import {
     FormLabel,
     Input,
 } from "@chakra-ui/react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { BaseViewContext } from "../providers/ContextProvider";
 import { Formik, Field } from "formik";
 import { ViewTableContext } from "../providers/TableProvider";
+import GrossSalaryCalculator from "../classes/GrossSalaryCalculator";
+import TaxCalculatorRouter from "../classes/TaxCalculatorRouter";
+import TaxesCalculator from "../classes/TaxesCalculator";
+import INetResults from "../interfaces/INetResults";
+import NetSalaryCalculator from "../classes/NetSalaryCalculator";
 
 const MainForm = (): JSX.Element => {
     const [formValues, setFormValues] = useContext(BaseViewContext);
-    const [, setShowTable] = useContext(ViewTableContext);
+    const [showTable, setShowTable] = useContext(ViewTableContext);
     const [loading, setLoading] = useState<boolean>(false);
     const currentDate: Date = new Date();
     const formRef = useRef(null);
-    useEffect(() => {
-        setTimeout(() => {
-            console.log(formValues);
-            setLoading(false);
-        }, 7000);
-    }, [formValues]);
+    const grossSalaryCalculator: GrossSalaryCalculator =
+        GrossSalaryCalculator.GetInstance();
 
     return (
         <Formik
@@ -44,7 +45,31 @@ const MainForm = (): JSX.Element => {
                 }
                 setLoading(true);
                 setFormValues(values);
-                setShowTable(true);
+                setShowTable({ ...showTable, show: true });
+                const grossResults =
+                    grossSalaryCalculator.getGrossSalaryData(values);
+                const taxCalculatorRouter: TaxCalculatorRouter =
+                    TaxCalculatorRouter.GetInstance();
+                const taxCalulator: TaxesCalculator =
+                    taxCalculatorRouter.GetTaxCalculator(
+                        grossResults.annualGrossSalary
+                    );
+                const netSalaryCalculator: NetSalaryCalculator =
+                    NetSalaryCalculator.GetInstance();
+                const netData: INetResults =
+                    netSalaryCalculator.getNetSalaryData(
+                        taxCalulator,
+                        grossResults
+                    );
+                setShowTable({
+                    ...showTable,
+                    netResults: netData,
+                    grossResults:
+                        grossSalaryCalculator.getGrossSalaryData(values),
+                });
+                //SetTimeOut used with showing animations purposes, I know that in a real application this must not be done
+                setTimeout(() => {}, 3000);
+
                 setLoading(false);
             }}
         >

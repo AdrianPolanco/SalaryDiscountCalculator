@@ -11,7 +11,7 @@ export default class NetSalaryCalculator extends Calculator {
     public static GetInstance(): NetSalaryCalculator {
         if (!NetSalaryCalculator.instace)
             NetSalaryCalculator.instace = new NetSalaryCalculator();
-        return this.instace;
+        return NetSalaryCalculator.instace;
     }
 
     public override calculateAnnualSalary(

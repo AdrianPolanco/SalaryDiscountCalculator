@@ -1,4 +1,4 @@
-import { Context, createContext, useState } from "react";
+import { createContext, useState } from "react";
 import IChildren from "../interfaces/IChildren";
 import IViewContext from "../interfaces/IViewContext";
 import IData from "../interfaces/IData";

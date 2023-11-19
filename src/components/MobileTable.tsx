@@ -4,13 +4,24 @@ import {
     TableContainer,
     Tbody,
     Td,
-    Tfoot,
     Th,
     Thead,
     Tr,
 } from "@chakra-ui/react";
+import { ViewTableContext } from "../providers/TableProvider";
+import { useContext } from "react";
 
 const MobileTable = (): JSX.Element => {
+    const [data] = useContext(ViewTableContext);
+    const { grossResults, netResults } = data;
+    const { annualGrossSalary, monthlyGrossSalary, dailySalary } = grossResults;
+    const {
+        annualNetSalary,
+        monthlyNetSalary,
+        dailyNetSalary,
+        monthlyWithHolding,
+        annualWithHolding,
+    } = netResults;
     return (
         <div className="flex flex-col gap-10 p-1">
             <div className="border border-solid border-green-200">
@@ -28,15 +39,15 @@ const MobileTable = (): JSX.Element => {
                         <Tbody>
                             <Tr>
                                 <Td>Annual gross salary</Td>
-                                <Td>RD${150000}</Td>
+                                <Td>RD${annualGrossSalary}</Td>
                             </Tr>
                             <Tr>
                                 <Td>Monthly gross salary</Td>
-                                <Td>RD${15000}</Td>
+                                <Td>RD${monthlyGrossSalary}</Td>
                             </Tr>
                             <Tr>
                                 <Td>Daily salary</Td>
-                                <Td>RD${150}</Td>
+                                <Td>RD${dailySalary}</Td>
                             </Tr>
                         </Tbody>
                     </Table>
@@ -55,31 +66,25 @@ const MobileTable = (): JSX.Element => {
                         <Tbody>
                             <Tr>
                                 <Td>Annual</Td>
-                                <Td>RD${120000}</Td>
+                                <Td>RD${annualNetSalary}</Td>
                             </Tr>
                             <Tr>
                                 <Td>Monthly</Td>
-                                <Td>RD${12000}</Td>
+                                <Td>RD${monthlyNetSalary}</Td>
                             </Tr>
                             <Tr>
                                 <Td>Daily</Td>
-                                <Td>RD${12000}</Td>
+                                <Td>RD${dailyNetSalary}</Td>
                             </Tr>
                             <Tr>
                                 <Td>Monthly Witholding</Td>
-                                <Td>RD${12000}</Td>
+                                <Td>RD${monthlyWithHolding}</Td>
                             </Tr>
                             <Tr>
                                 <Td>Annual Witholding</Td>
-                                <Td>RD${12000}</Td>
+                                <Td>RD${annualWithHolding}</Td>
                             </Tr>
                         </Tbody>
-                        <Tfoot>
-                            <Tr>
-                                <Th>To convert</Th>
-                                <Th>into</Th>
-                            </Tr>
-                        </Tfoot>
                     </Table>
                 </TableContainer>
             </div>

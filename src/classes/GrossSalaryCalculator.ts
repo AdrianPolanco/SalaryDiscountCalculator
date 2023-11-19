@@ -10,18 +10,20 @@ export default class GrossSalaryCalculator extends Calculator {
     public static GetInstance(): GrossSalaryCalculator {
         if (!GrossSalaryCalculator.instace)
             GrossSalaryCalculator.instace = new GrossSalaryCalculator();
-        return this.instace;
+        return GrossSalaryCalculator.instace;
     }
 
     public override calculateAnnualSalary(monthlySalary: number): number {
         return Number((monthlySalary * 12).toFixed(2));
     }
 
-    public getGrossSalaryData({ rawMonthlySalary }: IFormData): IGrossResults {
+    public getGrossSalaryData({
+        grossMonthlySalary,
+    }: IFormData): IGrossResults {
         const grossResult: IGrossResults = {
-            annualGrossSalary: this.calculateAnnualSalary(rawMonthlySalary),
-            monthlyGrossSalary: rawMonthlySalary,
-            dailySalary: this.calculateDailySalary(rawMonthlySalary),
+            annualGrossSalary: this.calculateAnnualSalary(grossMonthlySalary),
+            monthlyGrossSalary: grossMonthlySalary,
+            dailySalary: this.calculateDailySalary(grossMonthlySalary),
         };
         return grossResult;
     }
