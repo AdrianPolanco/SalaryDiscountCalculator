@@ -1,24 +1,27 @@
 import Header from "../components/Header";
 import MainForm from "../components/MainForm";
-import BaseFormDataContext from "../providers/ContextProvider";
 import MobileTable from "../components/MobileTable";
 import { ChakraProvider } from "@chakra-ui/react";
-import ViewTableDataContext, {
+import { useContext } from "react";
+import BaseFormProvider from "../providers/ContextProvider";
+import {
+    ViewTableProvider,
     ViewTableContext,
 } from "../providers/TableProvider";
-import { useContext } from "react";
 const BaseView = (): JSX.Element => {
+    const [data] = useContext(ViewTableContext);
+
     return (
         <div>
             <Header>
-                <BaseFormDataContext>
-                    <ViewTableDataContext>
+                <BaseFormProvider>
+                    <ViewTableProvider>
                         <MainForm></MainForm>
                         <ChakraProvider>
-                            {<MobileTable></MobileTable>}
+                            {data.show && <MobileTable></MobileTable>}
                         </ChakraProvider>
-                    </ViewTableDataContext>
-                </BaseFormDataContext>
+                    </ViewTableProvider>
+                </BaseFormProvider>
             </Header>
         </div>
     );

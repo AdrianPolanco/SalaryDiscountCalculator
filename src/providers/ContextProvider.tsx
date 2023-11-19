@@ -11,7 +11,7 @@ const formData: IFormData = {
 
 let BaseViewContext: Context<IReducer>;
 
-const BaseFormDataContext = ({ children }: IChildren) => {
+const BaseFormProvider = ({ children }: IChildren) => {
     //const [state, dispatch] = useReducer(formReducer, formData);
     const [values, setValues] = useState(formData);
     BaseViewContext = createContext<IReducer>([values, setValues]);
@@ -23,4 +23,4 @@ const BaseFormDataContext = ({ children }: IChildren) => {
 };
 
 export { BaseViewContext };
-export default BaseFormDataContext;
+export default BaseFormProvider;
