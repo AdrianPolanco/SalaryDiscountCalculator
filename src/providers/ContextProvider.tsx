@@ -1,8 +1,7 @@
-import { Context, createContext, useReducer } from "react";
+import { Context, createContext, useState } from "react";
 import IFormData from "../interfaces/IFormData";
 import { IReducer } from "../interfaces/IReducer";
 import IChildren from "../interfaces/IChildren";
-import formReducer from "../reducers/formReducer";
 
 const formData: IFormData = {
     rawMonthlySalary: 0,
@@ -13,11 +12,11 @@ const formData: IFormData = {
 let BaseViewContext: Context<IReducer>;
 
 const BaseFormDataContext = ({ children }: IChildren) => {
-    const [state, dispatch] = useReducer(formReducer, formData);
-
-    BaseViewContext = createContext<IReducer>([state, dispatch]);
+    //const [state, dispatch] = useReducer(formReducer, formData);
+    const [values, setValues] = useState(formData);
+    BaseViewContext = createContext<IReducer>([values, setValues]);
     return (
-        <BaseViewContext.Provider value={[state, dispatch]}>
+        <BaseViewContext.Provider value={[values, setValues]}>
             {children}
         </BaseViewContext.Provider>
     );

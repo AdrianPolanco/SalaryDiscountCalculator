@@ -1,4 +1,4 @@
 export default interface IAction {
-    name: "rawMonthlySalary" | "fromDate" | "untilDate";
+    name: string;
     value: string | number;
 }
