@@ -4,7 +4,7 @@ import { IReducer } from "../interfaces/IReducer";
 import IChildren from "../interfaces/IChildren";
 
 const formData: IFormData = {
-    rawMonthlySalary: 0,
+    grossMonthlySalary: 0,
     fromDate: "",
     untilDate: "",
 };

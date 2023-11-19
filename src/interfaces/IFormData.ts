@@ -1,6 +1,5 @@
 export default interface IFormData {
-    rawMonthlySalary: number;
+    grossMonthlySalary: number;
     fromDate: string;
     untilDate: string;
-  
 }
