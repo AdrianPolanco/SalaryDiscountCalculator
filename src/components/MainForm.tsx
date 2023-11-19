@@ -5,15 +5,17 @@ import {
     FormLabel,
     Input,
 } from "@chakra-ui/react";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { BaseViewContext } from "../providers/ContextProvider";
-import { Formik, Field } from "formik";
+import { Formik, Field, FormikErrors } from "formik";
 import { ViewTableContext } from "../providers/TableProvider";
 import GrossSalaryCalculator from "../classes/GrossSalaryCalculator";
 import TaxCalculatorRouter from "../classes/TaxCalculatorRouter";
 import TaxesCalculator from "../classes/TaxesCalculator";
 import INetResults from "../interfaces/INetResults";
 import NetSalaryCalculator from "../classes/NetSalaryCalculator";
+import IFormData from "../interfaces/IFormData";
+import IData from "../interfaces/IData";
 
 const MainForm = (): JSX.Element => {
     const [formValues, setFormValues] = useContext(BaseViewContext);
@@ -23,7 +25,58 @@ const MainForm = (): JSX.Element => {
     const formRef = useRef(null);
     const grossSalaryCalculator: GrossSalaryCalculator =
         GrossSalaryCalculator.GetInstance();
+    useEffect(() => {
+        if (formValues) {
+            setLoading(true);
 
+            const grossResults =
+                grossSalaryCalculator.getGrossSalaryData(formValues);
+            const taxCalculatorRouter: TaxCalculatorRouter =
+                TaxCalculatorRouter.GetInstance();
+            const taxCalulator: TaxesCalculator =
+                taxCalculatorRouter.GetTaxCalculator(
+                    grossResults.annualGrossSalary
+                );
+            const netSalaryCalculator: NetSalaryCalculator =
+                NetSalaryCalculator.GetInstance();
+            const netData: INetResults = netSalaryCalculator.getNetSalaryData(
+                taxCalulator,
+                grossResults
+            );
+            setShowTable((prevState) => ({
+                ...prevState,
+                netResults: netData,
+                grossResults:
+                    grossSalaryCalculator.getGrossSalaryData(formValues),
+            }));
+
+            setLoading(false);
+        }
+    }, [formValues]);
+    const handleSubmits = (values: IFormData) => {
+        setLoading(true);
+        setFormValues(values);
+        setLoading(false);
+        /* const grossResults = grossSalaryCalculator.getGrossSalaryData(values);
+        const taxCalculatorRouter: TaxCalculatorRouter =
+            TaxCalculatorRouter.GetInstance();
+        const taxCalulator: TaxesCalculator =
+            taxCalculatorRouter.GetTaxCalculator(
+                grossResults.annualGrossSalary
+            );
+        const netSalaryCalculator: NetSalaryCalculator =
+            NetSalaryCalculator.GetInstance();
+        const netData: INetResults = netSalaryCalculator.getNetSalaryData(
+            taxCalulator,
+            grossResults
+        );
+        setShowTable({
+            netResults: netData,
+            grossResults: grossSalaryCalculator.getGrossSalaryData(values),
+        });
+
+        */
+    };
     return (
         <Formik
             initialValues={formValues}
@@ -43,33 +96,8 @@ const MainForm = (): JSX.Element => {
                     });
                     return;
                 }
-                setLoading(true);
-                setFormValues(values);
 
-                const grossResults =
-                    grossSalaryCalculator.getGrossSalaryData(values);
-                const taxCalculatorRouter: TaxCalculatorRouter =
-                    TaxCalculatorRouter.GetInstance();
-                const taxCalulator: TaxesCalculator =
-                    taxCalculatorRouter.GetTaxCalculator(
-                        grossResults.annualGrossSalary
-                    );
-                const netSalaryCalculator: NetSalaryCalculator =
-                    NetSalaryCalculator.GetInstance();
-                const netData: INetResults =
-                    netSalaryCalculator.getNetSalaryData(
-                        taxCalulator,
-                        grossResults
-                    );
-                setShowTable((prevState) => {
-                    return {
-                        ...prevState,
-                        netResults: netData,
-                        grossResults,
-                    };
-                });
-
-                setLoading(false);
+                handleSubmits(values);
             }}
         >
             {({ handleSubmit, errors, touched }) => (

@@ -9,10 +9,11 @@ import {
     Tr,
 } from "@chakra-ui/react";
 import { ViewTableContext } from "../providers/TableProvider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 const MobileTable = (): JSX.Element => {
-    const [data] = useContext(ViewTableContext);
+    const [data, setData] = useContext(ViewTableContext);
+    //useEffect(() => {}, [data]);
     const { grossResults, netResults } = data;
     const { annualGrossSalary, monthlyGrossSalary, dailySalary } = grossResults;
     const {
@@ -91,10 +92,5 @@ const MobileTable = (): JSX.Element => {
         </div>
     );
 };
-/*         annualNetSalary,
-            monthlyNetSalary,
-            dailyNetSalary,
-            monthlyWithHolding,
-            annualWithHolding, */
 
 export default MobileTable;

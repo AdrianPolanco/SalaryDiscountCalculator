@@ -1,4 +1,3 @@
-import React from "react";
 import ISize from "../interfaces/ISize";
 
 const MoneyIcon = ({ height, width }: ISize): JSX.Element => {
