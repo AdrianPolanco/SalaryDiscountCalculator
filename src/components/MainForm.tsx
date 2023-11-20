@@ -15,7 +15,6 @@ import TaxesCalculator from "../classes/TaxesCalculator";
 import INetResults from "../interfaces/INetResults";
 import NetSalaryCalculator from "../classes/NetSalaryCalculator";
 import IFormData from "../interfaces/IFormData";
-import IData from "../interfaces/IData";
 import VacationsCalculator from "../classes/VacationsCalculator";
 import ExperienceWarehouse from "../classes/ExperienceWarehouse";
 import ChristmasCalculator from "../classes/ChristmasCalculator";
@@ -32,69 +31,52 @@ const MainForm = (): JSX.Element => {
     useEffect(() => {
         if (formValues) {
             setLoading(true);
-
-            const grossResults =
-                grossSalaryCalculator.getGrossSalaryData(formValues);
-            const taxCalculatorRouter: TaxCalculatorRouter =
-                TaxCalculatorRouter.GetInstance();
-            const taxCalulator: TaxesCalculator =
-                taxCalculatorRouter.GetTaxCalculator(
-                    grossResults.annualGrossSalary
+            /*SetTimeout used here with just showing animation purposes, I know perfectly that this must not be done in 
+            a real world project unless I have to fetch data from an external source*/
+            setTimeout(() => {
+                const grossResults =
+                    grossSalaryCalculator.getGrossSalaryData(formValues);
+                const taxCalculatorRouter: TaxCalculatorRouter =
+                    TaxCalculatorRouter.GetInstance();
+                const taxCalulator: TaxesCalculator =
+                    taxCalculatorRouter.GetTaxCalculator(
+                        grossResults.annualGrossSalary
+                    );
+                const netSalaryCalculator: NetSalaryCalculator =
+                    NetSalaryCalculator.GetInstance();
+                const netData: INetResults =
+                    netSalaryCalculator.getNetSalaryData(
+                        taxCalulator,
+                        grossResults
+                    );
+                const wareHouse: ExperienceWarehouse =
+                    ExperienceWarehouse.GetInstance();
+                const vacationsCalculator: VacationsCalculator =
+                    VacationsCalculator.GetInstance(wareHouse);
+                const vacations = vacationsCalculator.calculateAmount(
+                    formValues,
+                    netData
                 );
-            const netSalaryCalculator: NetSalaryCalculator =
-                NetSalaryCalculator.GetInstance();
-            const netData: INetResults = netSalaryCalculator.getNetSalaryData(
-                taxCalulator,
-                grossResults
-            );
-            const wareHouse: ExperienceWarehouse =
-                ExperienceWarehouse.GetInstance();
-            const vacationsCalculator: VacationsCalculator =
-                VacationsCalculator.GetInstance(wareHouse);
-            const vacations = vacationsCalculator.calculateAmount(
-                formValues,
-                netData
-            );
-            const christmasCalculator: ChristmasCalculator =
-                ChristmasCalculator.GetInstance();
-            const christmas: IChristmas = christmasCalculator.calculateAmount(
-                formValues,
-                netData
-            );
-            setShowTable((prevState) => ({
-                ...prevState,
-                netResults: netData,
-                grossResults,
-                vacations,
-                christmas,
-            }));
+                const christmasCalculator: ChristmasCalculator =
+                    ChristmasCalculator.GetInstance();
+                const christmas: IChristmas =
+                    christmasCalculator.calculateAmount(formValues, netData);
+                setShowTable((prevState) => ({
+                    ...prevState,
+                    netResults: netData,
+                    grossResults,
+                    vacations,
+                    christmas,
+                }));
 
-            setLoading(false);
+                setLoading(false);
+            }, 1000);
         }
     }, [formValues]);
     const handleSubmits = (values: IFormData) => {
         setLoading(true);
         setFormValues(values);
         setLoading(false);
-        /* const grossResults = grossSalaryCalculator.getGrossSalaryData(values);
-        const taxCalculatorRouter: TaxCalculatorRouter =
-            TaxCalculatorRouter.GetInstance();
-        const taxCalulator: TaxesCalculator =
-            taxCalculatorRouter.GetTaxCalculator(
-                grossResults.annualGrossSalary
-            );
-        const netSalaryCalculator: NetSalaryCalculator =
-            NetSalaryCalculator.GetInstance();
-        const netData: INetResults = netSalaryCalculator.getNetSalaryData(
-            taxCalulator,
-            grossResults
-        );
-        setShowTable({
-            netResults: netData,
-            grossResults: grossSalaryCalculator.getGrossSalaryData(values),
-        });
-
-        */
     };
     return (
         <Formik
@@ -125,7 +107,7 @@ const MainForm = (): JSX.Element => {
                     ref={formRef}
                     onSubmit={handleSubmit}
                 >
-                    <FormControl className="flex flex-col p-5">
+                    <FormControl className="flex flex-col p-5 justify-center items-center sm:flex-row sm:gap-5 ">
                         <FormLabel htmlFor="grossMonthlySalary">
                             Gross Monthly Salary:
                         </FormLabel>
@@ -135,17 +117,18 @@ const MainForm = (): JSX.Element => {
                             name="grossMonthlySalary"
                             defaultValue=""
                             placeholder="Your monthly salary in DOP"
-                            className="border border-green-200 rounded p-2"
+                            className="border border-green-200 rounded p-2 sm:w-1/2 md:w-1/4"
                             type="text"
                         />
                     </FormControl>
 
                     <div className="flex gap-10 justify-center">
-                        <div className="flex flex-col">
+                        <div>
                             <FormControl
                                 isInvalid={
                                     !!errors.fromDate && touched.fromDate
                                 }
+                                className="flex flex-col sm:flex-row sm:gap-5"
                             >
                                 <FormLabel htmlFor="fromDate">From: </FormLabel>
                                 <Field
@@ -177,6 +160,7 @@ const MainForm = (): JSX.Element => {
                                 isInvalid={
                                     !!errors.untilDate && touched.untilDate
                                 }
+                                className="flex flex-col sm:flex-row sm:gap-5"
                             >
                                 <FormLabel htmlFor="untilDate">
                                     Until:{" "}
@@ -211,7 +195,7 @@ const MainForm = (): JSX.Element => {
                         <Button
                             isLoading={loading}
                             loadingText="Calculating..."
-                            className="border border-solid bg-green-300 w-36 text-white rounded-xl p-1 hover:text-green-300 hover:bg-white hover:border-green-300 transform scale-100 active:scale-95 transition duration-200"
+                            className="border border-solid bg-green-300 w-36 text-white rounded-xl p-1 hover:text-green-300 hover:bg-white hover:border-green-300 transform scale-100 active:scale-95 transition duration-200 md:p-3"
                             variant="outline"
                             type="submit"
                         >
