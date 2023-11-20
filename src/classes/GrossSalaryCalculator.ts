@@ -13,7 +13,7 @@ export default class GrossSalaryCalculator extends Calculator {
         return GrossSalaryCalculator.instace;
     }
 
-    public override calculateAnnualSalary(monthlySalary: number): number {
+    protected override calculateAnnualSalary(monthlySalary: number): number {
         return Number((monthlySalary * 12).toFixed(2));
     }
 

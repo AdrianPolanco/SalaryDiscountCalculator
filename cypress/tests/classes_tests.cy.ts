@@ -9,6 +9,9 @@ import NetSalaryCalculator from "../../src/classes/NetSalaryCalculator";
 import IFormData from "../../src/interfaces/IFormData";
 import IGrossResults from "../../src/interfaces/IGrossResults";
 import INetResults from "../../src/interfaces/INetResults";
+import VacationsCalculator from "../../src/classes/VacationsCalculator";
+import ExperienceWarehouse from "../../src/classes/ExperienceWarehouse";
+import Junior from "../../src/classes/Junior";
 
 const grossSalaryCalculator: GrossSalaryCalculator =
     GrossSalaryCalculator.GetInstance();
@@ -19,7 +22,12 @@ const highTaxCalculator: HighTaxCalculator = HighTaxCalculator.GetInstance();
 const mediumTaxCalculatorTaxtCalculator: MediumTaxCalculator =
     MediumTaxCalculator.GetInstance();
 const lowTaxCalculator: LowTaxCalculator = LowTaxCalculator.GetInstance();
-
+const wareHouse: ExperienceWarehouse = ExperienceWarehouse.GetInstance();
+const vacationCalculator: VacationsCalculator =
+    VacationsCalculator.GetInstance(wareHouse);
+const firstDate: Date = new Date("2023-11-19");
+const secondDate: Date = new Date("2014-11-01");
+// #region Former tests
 describe("GrossSalaryCalculator class unit tests", (): void => {
     it("Calculate gross annual salary", () => {
         expect(grossSalaryCalculator.calculateAnnualSalary(10000)).to.eql(
@@ -140,6 +148,34 @@ describe("TaxCalculator classes unit testing", () => {
         );
 
         cy.wrap(results).should("be.closeTo", 114940.94, 0.9);
+    });
+});
+//#endregion
+describe("Vacations calculation testing", () => {
+    it("Working time method testing", () => {
+        const years: number = vacationCalculator.calculateTime(
+            firstDate,
+            secondDate
+        );
+        expect(years).to.eql(9);
+    });
+
+    it("Testing experience warehouse class with junior level", () => {
+        const experienceLevel = wareHouse.getExperienceLevel(0);
+        const amount = experienceLevel.calculateAmount(50000);
+        expect(amount).to.eql(0);
+    });
+
+    it("Testing experience warehouse class with mid-senior level", () => {
+        const experienceLevel = wareHouse.getExperienceLevel(1);
+        const amount = experienceLevel.calculateAmount(2098.19);
+        cy.wrap(amount).should("be.closeTo", 29374.73, 0.1);
+    });
+
+    it("Testing experience warehouse class with senior level", () => {
+        const experienceLevel = wareHouse.getExperienceLevel(6);
+        const amount = experienceLevel.calculateAmount(3500.5);
+        expect(amount).to.eql(63009);
     });
 });
 

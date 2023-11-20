@@ -16,6 +16,8 @@ import INetResults from "../interfaces/INetResults";
 import NetSalaryCalculator from "../classes/NetSalaryCalculator";
 import IFormData from "../interfaces/IFormData";
 import IData from "../interfaces/IData";
+import VacationsCalculator from "../classes/VacationsCalculator";
+import ExperienceWarehouse from "../classes/ExperienceWarehouse";
 
 const MainForm = (): JSX.Element => {
     const [formValues, setFormValues] = useContext(BaseViewContext);
@@ -43,11 +45,19 @@ const MainForm = (): JSX.Element => {
                 taxCalulator,
                 grossResults
             );
+            const wareHouse: ExperienceWarehouse =
+                ExperienceWarehouse.GetInstance();
+            const vacationsCalculator: VacationsCalculator =
+                VacationsCalculator.GetInstance(wareHouse);
+            const vacations = vacationsCalculator.calculateAmount(
+                formValues,
+                netData
+            );
             setShowTable((prevState) => ({
                 ...prevState,
                 netResults: netData,
-                grossResults:
-                    grossSalaryCalculator.getGrossSalaryData(formValues),
+                grossResults,
+                vacations,
             }));
 
             setLoading(false);

@@ -8,7 +8,7 @@ export default abstract class Calculator {
         return Number((annualAmount / 12).toFixed(2));
     }
     //Calculates annual salary
-    public abstract calculateAnnualSalary(
+    protected abstract calculateAnnualSalary(
         monthlySalary: number,
         totalTaxes?: number
     ): number;

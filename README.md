@@ -23,22 +23,22 @@ años, una suma igual a veintitrés días de salario ordinario, por cada año de
 
 Calculo Impuestos Salario:
 
-Salario Anual = Salario Bruto _ 12
+Salario Anual = Salario Bruto \ 12
 IMPUESTO ANUAL a pagar dependiendo del salario:
 Hasta 416220 anual (34685) mensual -> Impuesto = 0
-Desde 416220.01 anual (34685.00083 mensual) hasta 624329 anual (52027.41 mensual) -> (Salario - 416220.01) * 0.15
-Desde 624329.01 anual (52027.4175 mensual) hasta 867123 anual (72.260,25 mensual) -> 31216 + ((Salario - 624329.01) * 0.2)
-Desde 867123.01 anual (72.260,25083 mensual) en adelante -> 79776 + ((Salario Anual - 867123.01) * 0.25)
+Desde 416220.01 anual (34685.00083 mensual) hasta 624329 anual (52027.41 mensual) -> (Salario - 416220.01) _ 0.15
+Desde 624329.01 anual (52027.4175 mensual) hasta 867123 anual (72.260,25 mensual) -> 31216 + ((Salario - 624329.01) _ 0.2)
+Desde 867123.01 anual (72.260,25083 mensual) en adelante -> 79776 + ((Salario Anual - 867123.01) \* 0.25)
 
 IMPUESTO MENSUAL = IMPUESTO ANUAL/12
 
 Art. 177.- (Modificado por la Ley núm. 97-97, G.O. 9955, de
-fecha 31 de mayo de 1997). Los empleadores tienen la obligación de conceder a todo trabajador un período de vacaciones
-de catorce (14) días laborables, con disfrute de salario, conforme a la escala siguiente:
+fecha 31 de mayo de 1997). Los empleadores tienen la obligación de conceder a todo trabajador un período de vacaciones
+de catorce (14) días laborables, con disfrute de salario, conforme a la escala siguiente:
 1ro. Después de un trabajo continuo no menor de un año
 ni mayor de cinco, catorce días de salario ordinario.
 2do. Después de un trabajo continuo no menor de cinco
 años, dieciocho días de salario ordinario.
 
-Vacaciones = Salario diario _ 14 (Si tiene entre 1 y 5 años trabajando en esa empresa)
-Vacaciones = Salario diario _ 14 (Si tiene más de 5 años trabajando en esa empresa)
+Vacaciones = Salario diario * 14 (Si tiene entre 1 y 5 años trabajando en esa empresa)
+Vacaciones = Salario diario * 18 (Si tiene más de 5 años trabajando en esa empresa)

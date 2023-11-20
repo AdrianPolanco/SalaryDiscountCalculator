@@ -12,9 +12,9 @@ import { ViewTableContext } from "../providers/TableProvider";
 import { useContext, useEffect } from "react";
 
 const MobileTable = (): JSX.Element => {
-    const [data, setData] = useContext(ViewTableContext);
+    const [data] = useContext(ViewTableContext);
     //useEffect(() => {}, [data]);
-    const { grossResults, netResults } = data;
+    const { grossResults, netResults, vacations } = data;
     const { annualGrossSalary, monthlyGrossSalary, dailySalary } = grossResults;
     const {
         annualNetSalary,
@@ -23,6 +23,7 @@ const MobileTable = (): JSX.Element => {
         monthlyWithHolding,
         annualWithHolding,
     } = netResults;
+    const { years, amount } = vacations;
     return (
         <div className="flex flex-col gap-10 p-1">
             <div className="border border-solid border-green-200">
@@ -84,6 +85,29 @@ const MobileTable = (): JSX.Element => {
                             <Tr>
                                 <Td>Annual Witholding</Td>
                                 <Td>RD${annualWithHolding}</Td>
+                            </Tr>
+                        </Tbody>
+                    </Table>
+                </TableContainer>
+            </div>
+            <div className="border border-solid border-green-200">
+                <TableContainer className="w-full text-sm">
+                    <Table variant="striped" colorScheme="teal">
+                        <TableCaption>Data about your vacations</TableCaption>
+                        <Thead>
+                            <Tr>
+                                <Th>Vacations Data</Th>
+                                <Th>Amount</Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody>
+                            <Tr>
+                                <Td>Years</Td>
+                                <Td>{years}</Td>
+                            </Tr>
+                            <Tr>
+                                <Td>Amount</Td>
+                                <Td>RD${amount}</Td>
                             </Tr>
                         </Tbody>
                     </Table>

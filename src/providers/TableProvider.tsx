@@ -16,6 +16,10 @@ const data: IData = {
         monthlyWithHolding: 0,
         annualWithHolding: 0,
     },
+    vacations: {
+        years: 0,
+        amount: 0,
+    },
 };
 const ViewTableContext = createContext<IViewContext>([data, () => {}]);
 const ViewTableProvider = ({ children }: IChildren) => {
