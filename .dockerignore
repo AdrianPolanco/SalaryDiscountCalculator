@@ -1,0 +1,9 @@
+node_modules
+.git
+.gitignore
+cypress
+.eslintrc.cjs
+cypress.config.ts
+.npmignore
+dist
+README.md
