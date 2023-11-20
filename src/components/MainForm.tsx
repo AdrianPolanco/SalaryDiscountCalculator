@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { BaseViewContext } from "../providers/ContextProvider";
-import { Formik, Field, FormikErrors } from "formik";
+import { Formik, Field } from "formik";
 import { ViewTableContext } from "../providers/TableProvider";
 import GrossSalaryCalculator from "../classes/GrossSalaryCalculator";
 import TaxCalculatorRouter from "../classes/TaxCalculatorRouter";
@@ -21,46 +21,73 @@ import ChristmasCalculator from "../classes/ChristmasCalculator";
 import IChristmas from "../interfaces/IChristmas";
 
 const MainForm = (): JSX.Element => {
+    //Using base view context
     const [formValues, setFormValues] = useContext(BaseViewContext);
+    //Using Table Context
     const [, setShowTable] = useContext(ViewTableContext);
+    //Using state to begin and stop the loading animation
     const [loading, setLoading] = useState<boolean>(false);
+    //Getting a date instance in order to show it in the UI
     const currentDate: Date = new Date();
     const formRef = useRef(null);
+    //Getting a grossSalaryCalculator instance
     const grossSalaryCalculator: GrossSalaryCalculator =
         GrossSalaryCalculator.GetInstance();
+    //Using effect to observe the changes in the formValues state
     useEffect(() => {
-        if (formValues) {
+        /*Setting the loading to true in order to begin the button animation and not show the animation when refresh the page*/
+        if (formValues.fromDate !== "") {
             setLoading(true);
+        }
+
+        if (formValues) {
             /*SetTimeout used here with just showing animation purposes, I know perfectly that this must not be done in 
             a real world project unless I have to fetch data from an external source*/
             setTimeout(() => {
+                //Getting the gross-related amounts with the getGrossSalaryData method, that receives the data typed in the form
                 const grossResults =
                     grossSalaryCalculator.getGrossSalaryData(formValues);
+                //Getting a TaxCalculatorRouter instance
                 const taxCalculatorRouter: TaxCalculatorRouter =
                     TaxCalculatorRouter.GetInstance();
+                /*Getting the tax-calculator class from the GetTaxCalculator method, this method will return a tax-calculator class
+                according to the annual gross salary calculated previously
+                */
                 const taxCalulator: TaxesCalculator =
                     taxCalculatorRouter.GetTaxCalculator(
                         grossResults.annualGrossSalary
                     );
+                //Getting a net salary calculator instance
                 const netSalaryCalculator: NetSalaryCalculator =
                     NetSalaryCalculator.GetInstance();
+                /* Calculating the net salary with the getNetSalaryData, it will receive the tax-calculator instance that was 
+                gotten previously, and the results from the grossSalary class calculations */
                 const netData: INetResults =
                     netSalaryCalculator.getNetSalaryData(
                         taxCalulator,
                         grossResults
                     );
+                //Getting a ExperienceWarehouse instance
                 const wareHouse: ExperienceWarehouse =
                     ExperienceWarehouse.GetInstance();
+                //Getting a vacations-calculator instance, with the wareHouse class as dependency
                 const vacationsCalculator: VacationsCalculator =
                     VacationsCalculator.GetInstance(wareHouse);
+                /*Getting the vacations amount with the method calculateAmount, it receives the form data and the net data
+                 calculated previously, in the background it will get the experience level with a method of the wareHouse class,
+                 that was the reason why we passed it as parameter 
+                */
                 const vacations = vacationsCalculator.calculateAmount(
                     formValues,
                     netData
                 );
+                //Getting an instance from the ChristmasCalculator class
                 const christmasCalculator: ChristmasCalculator =
                     ChristmasCalculator.GetInstance();
+                //Calculating the christmas salary
                 const christmas: IChristmas =
                     christmasCalculator.calculateAmount(formValues, netData);
+                //Updating the state in order to reflect the changes in the table
                 setShowTable((prevState) => ({
                     ...prevState,
                     netResults: netData,
@@ -68,15 +95,14 @@ const MainForm = (): JSX.Element => {
                     vacations,
                     christmas,
                 }));
-
+                //Setting the loading to false in order to stop the button animation
                 setLoading(false);
             }, 1000);
         }
     }, [formValues]);
     const handleSubmits = (values: IFormData) => {
-        setLoading(true);
+        //Changing the state of the form values when submit the form, this will trigger the code inside useEffect
         setFormValues(values);
-        setLoading(false);
     };
     return (
         <Formik
@@ -87,17 +113,20 @@ const MainForm = (): JSX.Element => {
                 const fromDate = values.fromDate;
                 const untilDate = values.untilDate;
 
-                if (fromDate > untilDate) {
-                    // Setting errors
+                //Validating if the from date input as a later date than the until date input
+                if (fromDate >= untilDate) {
+                    // Setting errors if the condition is true
                     setErrors({
                         fromDate:
                             "The starting date must be before than the ending date",
                         untilDate:
                             "The ending date must be after the starting date",
                     });
+                    //Ending the function if so
                     return;
                 }
 
+                //Calling handle submits function if the validation was passed
                 handleSubmits(values);
             }}
         >
@@ -121,14 +150,16 @@ const MainForm = (): JSX.Element => {
                             type="text"
                         />
                     </FormControl>
-
+                    <FormErrorMessage className="text-red-600">
+                        {errors.grossMonthlySalary}
+                    </FormErrorMessage>
                     <div className="flex gap-10 justify-center">
                         <div>
                             <FormControl
                                 isInvalid={
                                     !!errors.fromDate && touched.fromDate
                                 }
-                                className="flex flex-col sm:flex-row sm:gap-5"
+                                className="flex flex-col sm:flex-row sm:gap-2"
                             >
                                 <FormLabel htmlFor="fromDate">From: </FormLabel>
                                 <Field
@@ -160,7 +191,7 @@ const MainForm = (): JSX.Element => {
                                 isInvalid={
                                     !!errors.untilDate && touched.untilDate
                                 }
-                                className="flex flex-col sm:flex-row sm:gap-5"
+                                className="flex flex-col sm:flex-row sm:gap-2"
                             >
                                 <FormLabel htmlFor="untilDate">
                                     Until:{" "}

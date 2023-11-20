@@ -1,7 +1,7 @@
 import IChildren from "../interfaces/IChildren";
 import MoneyIcon from "./MoneyIcon";
-import HamburguerMenu from "./HamburguerMenu";
 
+//Writting the header component in order to show the same header when adding more features to the app
 const Header = ({ children }: IChildren): JSX.Element => {
     return (
         <div className="">
@@ -9,14 +9,6 @@ const Header = ({ children }: IChildren): JSX.Element => {
                 <div>
                     <MoneyIcon height={50} width={50} />
                 </div>
-                {/* <div className="flex items-center">
-                    <HamburguerMenu />
-                </div> */}
-
-                {/*<div className="flex gap">
-                    <a href="">Sign in</a>
-                    <a href="">Sign up</a>
-    </div>*/}
             </header>
             {children}
         </div>

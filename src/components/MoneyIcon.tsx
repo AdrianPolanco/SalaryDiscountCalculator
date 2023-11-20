@@ -1,5 +1,6 @@
 import ISize from "../interfaces/ISize";
 
+//Component to show the money icon shown inside the header
 const MoneyIcon = ({ height, width }: ISize): JSX.Element => {
     return (
         <svg

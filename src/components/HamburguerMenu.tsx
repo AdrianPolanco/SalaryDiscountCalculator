@@ -12,7 +12,7 @@ import {
     MenuList,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
-
+//Component made for use when adding more features (login, sign up, watching last 3 operations done) to the app
 const HamburguerMenu = (): JSX.Element => {
     return (
         <Menu>

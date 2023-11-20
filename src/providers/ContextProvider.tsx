@@ -3,6 +3,7 @@ import IFormData from "../interfaces/IFormData";
 import { IReducer } from "../interfaces/IReducer";
 import IChildren from "../interfaces/IChildren";
 
+//Defining the data will be send from the form
 const formData: IFormData = {
     grossMonthlySalary: 0,
     fromDate: "",
@@ -11,8 +12,8 @@ const formData: IFormData = {
 
 let BaseViewContext: Context<IReducer>;
 
+//Creating provider
 const BaseFormProvider = ({ children }: IChildren) => {
-    //const [state, dispatch] = useReducer(formReducer, formData);
     const [values, setValues] = useState(formData);
     BaseViewContext = createContext<IReducer>([values, setValues]);
     return (

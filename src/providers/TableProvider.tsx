@@ -3,6 +3,7 @@ import IChildren from "../interfaces/IChildren";
 import IViewContext from "../interfaces/IViewContext";
 import IData from "../interfaces/IData";
 
+//Defining the data that will be use as context and that will be displayed in the table
 const data: IData = {
     grossResults: {
         annualGrossSalary: 0,
@@ -25,13 +26,12 @@ const data: IData = {
         amount: 0,
     },
 };
+//Creating context
 const ViewTableContext = createContext<IViewContext>([data, () => {}]);
+//Creating provider
 const ViewTableProvider = ({ children }: IChildren) => {
-    //const [state, dispatch] = useReducer(formReducer, formData);
     const [show, setShow] = useState(data);
-    /* const [grossdata, setGrossData] = useState({})
-    const [netdata, setNetData] = useState({}); */
-    //ViewTableContext = createContext<IViewContext>([show, setShow]);
+
     return (
         <ViewTableContext.Provider value={[show, setShow]}>
             {children}

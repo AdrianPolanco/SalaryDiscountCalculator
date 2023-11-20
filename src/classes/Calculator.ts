@@ -1,3 +1,4 @@
+//Defining the abstract class Calculator
 export default abstract class Calculator {
     //Calculates daily salary according to DGII
     public calculateDailySalary(monthlySalary: number): number {

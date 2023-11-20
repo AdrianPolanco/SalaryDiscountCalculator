@@ -9,8 +9,9 @@ import {
     Tr,
 } from "@chakra-ui/react";
 import { ViewTableContext } from "../providers/TableProvider";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
+//Writing the table component that will be shown when the screen width is below than lg view
 const MobileTable = (): JSX.Element => {
     const [data] = useContext(ViewTableContext);
     //useEffect(() => {}, [data]);
@@ -26,7 +27,7 @@ const MobileTable = (): JSX.Element => {
     const { years, amount } = vacations;
     const { workingMonthsInThisYear } = christmas;
     return (
-        <div className="flex flex-col gap-10 p-1">
+        <div className="flex flex-col gap-10 p-1 lg:hidden">
             <div className="border border-solid border-green-200">
                 <TableContainer className="w-full text-sm">
                     <Table variant="striped" colorScheme="teal">

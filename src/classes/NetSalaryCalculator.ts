@@ -5,22 +5,26 @@ import TaxesCalculator from "./TaxesCalculator";
 
 export default class NetSalaryCalculator extends Calculator {
     private static instace: NetSalaryCalculator;
+    //Making the constructor private so we only can get an instance from the GetInstance method
     private constructor() {
         super();
     }
+    //Returns an instance from this class, so that there can only be a single instance of the class
     public static GetInstance(): NetSalaryCalculator {
         if (!NetSalaryCalculator.instace)
             NetSalaryCalculator.instace = new NetSalaryCalculator();
         return NetSalaryCalculator.instace;
     }
 
-    public override calculateAnnualSalary(
+    //Calculating annual net salary according to DGII rules
+    protected override calculateAnnualSalary(
         grossAnnualSalary: number,
         annualTaxes: number
     ) {
         return Number((grossAnnualSalary - annualTaxes).toFixed(2));
     }
 
+    //Return all net-salary related data
     public getNetSalaryData(
         taxCalculator: TaxesCalculator,
         { annualGrossSalary }: IGrossResults

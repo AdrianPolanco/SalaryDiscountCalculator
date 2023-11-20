@@ -5,6 +5,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import BaseFormProvider from "../providers/ContextProvider";
 import { ViewTableProvider } from "../providers/TableProvider";
+import DesktopTable from "../components/DesktopTable";
+//By the moment, this is the only view the app has
 const BaseView = (): JSX.Element => {
     return (
         <div>
@@ -14,6 +16,7 @@ const BaseView = (): JSX.Element => {
                         <MainForm></MainForm>
                         <ChakraProvider>
                             <MobileTable></MobileTable>
+                            <DesktopTable></DesktopTable>
                         </ChakraProvider>
                     </ViewTableProvider>
                 </BaseFormProvider>
