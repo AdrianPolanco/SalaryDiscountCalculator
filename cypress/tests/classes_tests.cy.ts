@@ -12,6 +12,8 @@ import INetResults from "../../src/interfaces/INetResults";
 import VacationsCalculator from "../../src/classes/VacationsCalculator";
 import ExperienceWarehouse from "../../src/classes/ExperienceWarehouse";
 import Junior from "../../src/classes/Junior";
+import ChristmasCalculator from "../../src/classes/ChristmasCalculator";
+import IChristmas from "../../src/interfaces/IChristmas";
 
 const grossSalaryCalculator: GrossSalaryCalculator =
     GrossSalaryCalculator.GetInstance();
@@ -25,6 +27,9 @@ const lowTaxCalculator: LowTaxCalculator = LowTaxCalculator.GetInstance();
 const wareHouse: ExperienceWarehouse = ExperienceWarehouse.GetInstance();
 const vacationCalculator: VacationsCalculator =
     VacationsCalculator.GetInstance(wareHouse);
+const christmasCalculator: ChristmasCalculator =
+    ChristmasCalculator.GetInstance();
+
 const firstDate: Date = new Date("2023-11-19");
 const secondDate: Date = new Date("2014-11-01");
 // #region Former tests
@@ -176,6 +181,32 @@ describe("Vacations calculation testing", () => {
         const experienceLevel = wareHouse.getExperienceLevel(6);
         const amount = experienceLevel.calculateAmount(3500.5);
         expect(amount).to.eql(63009);
+    });
+
+    it("Testing Christmas Calculator class - Get Current Month", () => {
+        expect(christmasCalculator.calculateTime(firstDate)).to.eql(11);
+    });
+
+    it("Testing Christmas Calculator class - Get Current Christmas Salary Amount", () => {
+        const mockFormData: IFormData = {
+            grossMonthlySalary: 0,
+            fromDate: "2023-11-20",
+            untilDate: "2023-11-19",
+        };
+
+        const mockNetResults: INetResults = {
+            annualNetSalary: 0,
+            monthlyNetSalary: 57856,
+            dailyNetSalary: 0,
+            monthlyWithHolding: 0,
+            annualWithHolding: 0,
+        };
+        const christmasData: IChristmas = christmasCalculator.calculateAmount(
+            mockFormData,
+            mockNetResults
+        );
+        cy.wrap(christmasData.amount).should("be.closeTo", 53034.66, 0.1);
+        expect(christmasData.workingMonthsInThisYear).to.eql(11);
     });
 });
 

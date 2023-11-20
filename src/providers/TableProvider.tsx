@@ -20,6 +20,10 @@ const data: IData = {
         years: 0,
         amount: 0,
     },
+    christmas: {
+        workingMonthsInThisYear: 0,
+        amount: 0,
+    },
 };
 const ViewTableContext = createContext<IViewContext>([data, () => {}]);
 const ViewTableProvider = ({ children }: IChildren) => {

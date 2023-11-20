@@ -18,6 +18,8 @@ import IFormData from "../interfaces/IFormData";
 import IData from "../interfaces/IData";
 import VacationsCalculator from "../classes/VacationsCalculator";
 import ExperienceWarehouse from "../classes/ExperienceWarehouse";
+import ChristmasCalculator from "../classes/ChristmasCalculator";
+import IChristmas from "../interfaces/IChristmas";
 
 const MainForm = (): JSX.Element => {
     const [formValues, setFormValues] = useContext(BaseViewContext);
@@ -53,11 +55,18 @@ const MainForm = (): JSX.Element => {
                 formValues,
                 netData
             );
+            const christmasCalculator: ChristmasCalculator =
+                ChristmasCalculator.GetInstance();
+            const christmas: IChristmas = christmasCalculator.calculateAmount(
+                formValues,
+                netData
+            );
             setShowTable((prevState) => ({
                 ...prevState,
                 netResults: netData,
                 grossResults,
                 vacations,
+                christmas,
             }));
 
             setLoading(false);

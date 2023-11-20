@@ -14,7 +14,7 @@ import { useContext, useEffect } from "react";
 const MobileTable = (): JSX.Element => {
     const [data] = useContext(ViewTableContext);
     //useEffect(() => {}, [data]);
-    const { grossResults, netResults, vacations } = data;
+    const { grossResults, netResults, vacations, christmas } = data;
     const { annualGrossSalary, monthlyGrossSalary, dailySalary } = grossResults;
     const {
         annualNetSalary,
@@ -24,6 +24,7 @@ const MobileTable = (): JSX.Element => {
         annualWithHolding,
     } = netResults;
     const { years, amount } = vacations;
+    const { workingMonthsInThisYear } = christmas;
     return (
         <div className="flex flex-col gap-10 p-1">
             <div className="border border-solid border-green-200">
@@ -103,7 +104,7 @@ const MobileTable = (): JSX.Element => {
                         <Tbody>
                             <Tr>
                                 <Td>Years</Td>
-                                <Td>{years}</Td>
+                                <Td>{years || 0}</Td>
                             </Tr>
                             <Tr>
                                 <Td>Amount</Td>
@@ -112,6 +113,31 @@ const MobileTable = (): JSX.Element => {
                         </Tbody>
                     </Table>
                 </TableContainer>
+                <div className="border border-solid border-green-200">
+                    <TableContainer className="w-full text-sm">
+                        <Table variant="striped" colorScheme="teal">
+                            <TableCaption>
+                                Data about your christmas holidays
+                            </TableCaption>
+                            <Thead>
+                                <Tr>
+                                    <Th>Data</Th>
+                                    <Th>Amount</Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                <Tr>
+                                    <Td>Months worked in this year</Td>
+                                    <Td>{workingMonthsInThisYear || 0}</Td>
+                                </Tr>
+                                <Tr>
+                                    <Td>Amount</Td>
+                                    <Td>RD$ {christmas.amount || 0}</Td>
+                                </Tr>
+                            </Tbody>
+                        </Table>
+                    </TableContainer>
+                </div>
             </div>
         </div>
     );
