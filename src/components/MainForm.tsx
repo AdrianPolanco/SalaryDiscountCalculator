@@ -136,7 +136,13 @@ const MainForm = (): JSX.Element => {
                     ref={formRef}
                     onSubmit={handleSubmit}
                 >
-                    <FormControl className="flex flex-col p-5 justify-center items-center sm:flex-row sm:gap-5 ">
+                    <FormControl
+                        className="flex flex-col p-5 justify-center items-center sm:flex-row sm:gap-5 "
+                        isInvalid={
+                            !!errors.grossMonthlySalary &&
+                            touched.grossMonthlySalary
+                        }
+                    >
                         <FormLabel htmlFor="grossMonthlySalary">
                             Gross Monthly Salary:
                         </FormLabel>
@@ -144,15 +150,30 @@ const MainForm = (): JSX.Element => {
                             as={Input}
                             id="grossMonthlySalary"
                             name="grossMonthlySalary"
-                            defaultValue=""
                             placeholder="Your monthly salary in DOP"
                             className="border border-green-200 rounded p-2 sm:w-1/2 md:w-1/4"
-                            type="text"
+                            type="number"
+                            validate={(value: string) => {
+                                let error;
+
+                                if (value === "") {
+                                    error = "This field is required";
+                                    return error;
+                                }
+
+                                const numericValue = Number(value);
+                                if (isNaN(numericValue) || numericValue < 0) {
+                                    error =
+                                        "Please enter a valid positive number";
+                                    return error;
+                                }
+                            }}
                         />
+
+                        <FormErrorMessage className="text-red-600">
+                            {errors.grossMonthlySalary}
+                        </FormErrorMessage>
                     </FormControl>
-                    <FormErrorMessage className="text-red-600">
-                        {errors.grossMonthlySalary}
-                    </FormErrorMessage>
                     <div className="flex gap-10 justify-center">
                         <div>
                             <FormControl
@@ -176,9 +197,8 @@ const MainForm = (): JSX.Element => {
 
                                         if (value == "") {
                                             error = "This field is required";
+                                            return error;
                                         }
-
-                                        return error;
                                     }}
                                 />
                                 <FormErrorMessage className="text-red-600">
